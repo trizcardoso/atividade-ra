@@ -1,0 +1,106 @@
+/* Reseta o cálculo de tamanho de todos os elementos para incluir bordas e preenchimentos */
+* {
+    box-sizing: border-box;
+}
+
+/* Configura a tela cheia e remove barras de rolagem para prender o app na tela do celular */
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Garante que a cena 3D/Câmera de RA ocupe 100% da tela ao fundo de toda a interface */
+a-scene {
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Painel de status superior (HUD) */
+#hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30; /* Fica acima da câmera, mas atrás dos botões */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    color: #ffffff;
+    /* Gradiente escuro para garantir a leitura do texto sobre qualquer fundo da câmera */
+    background: linear-gradient(180deg, rgba(3, 18, 33, 0.88), rgba(3, 18, 33, 0.25));
+    
+    /* Permite clicar através do HUD (o usuário consegue interagir com o que estiver atrás dele) */
+    pointer-events: none;
+}
+
+/* Camada invisível que envelopa e gerencia os botões interativos */
+#hotspot-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 40; /* Fica acima do HUD */
+    
+    /* Também ignora toques para não bloquear a cena 3D de fundo */
+    pointer-events: none;
+}
+
+/* Estilo padrão de cada botão flutuante numerado */
+.hotspot {
+    position: absolute;
+    display: none; /* Nasce escondido por padrão até o alvo ser encontrado */
+    width: 54px;
+    height: 54px;
+    transform: translate(-50%, -50%); /* Centraliza o botão perfeitamente no ponto correto */
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: #1565c0; /* Cor azul para botões informativos */
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+
+    /* Reativa os cliques especificamente nos botões, ignorando a trava da camada pai */
+    pointer-events: auto;
+    /* Otimiza e acelera a resposta do toque no ambiente mobile */
+    touch-action: manipulation;
+}
+
+/* Classe aplicada via JavaScript que exibe os botões quando a câmera reconhece o torno */
+.hotspot.visible {
+    display: block;
+}
+
+/* Variação vermelha para o botão de segurança (Hotspot 4) */
+.hotspot-danger {
+    background: #d32f2f;
+}
+
+/* Efeito visual de clique: encolhe levemente o botão quando pressionado */
+.hotspot:active {
+    transform: translate(-50%, -50%) scale(0.90);
+}
+
+/* Classe utilitária global para esconder elementos instantaneamente (como o painel de info) */
+.hidden {
+    display: none !important;
+}
+
+/* Painel inferior flutuante que exibe os textos explicativos do torno */
+.info-panel {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%); /* Centraliza o painel horizontalmente na tela */
+    z-index: 60; /* Fica no topo absoluto de tudo */
+    width: min(92vw, 520px); /* Responsivo: ocupa 92% da tela no celular ou no máximo 520px em telas maiores */
+    padding: 18px 48px 18px 18px; /* Dá espaço extra na direita para o botão de fechar (X) */
+    color: #eef7ff;
+    background: rgba(5, 20, 35, 0.96); /* Fundo quase preto com leve transparência tecnológica */
+    border: 1px solid rgba(125, 211, 252, 0.65); /* Borda azul ciano brilhante estilo HUD moderno */
+    border-radius: 16px;
+}

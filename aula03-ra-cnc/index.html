@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RA | Manual Interativo do Torno CNC</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Bibliotecas que ativam a Realidade Aumentada e a renderização dos elementos -->
+    <script src="https://aframe.io"></script>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <!-- HUD: Barra superior fixa que mostra as instruções e o estado da câmera para o usuário -->
+    <header id="hud">
+        <div class="hud-text">
+            <strong>TORNO CNC • MANUAL INTERATIVO</strong>
+            <span id="status">Inicializando a câmera...</span>
+        </div>
+        <span id="badge">INICIANDO</span>
+    </header>
+
+    <!-- CAMADA DE HOTSPOTS: Os botões na tela que o usuário vai clicar para abrir as informações de cada peça -->
+    <div id="hotspot-layer">
+        <!-- O 'data-topic' diz ao JavaScript qual informação abrir ao clicar no botão -->
+        <button class="hotspot" type="button" data-topic="placa" data-x="-0.34" data-y="0.02" data-z="0.03" aria-label="Cabeçote e placa">1</button>
+        <button class="hotspot" type="button" data-topic="torre" data-x="0.07" data-y="0.03" data-z="0.03" aria-label="Torre de ferramentas">2</button>
+        <button class="hotspot" type="button" data-topic="comando" data-x="0.36" data-y="0.15" data-z="0.03" aria-label="Painel de comando CNC">3</button>
+        <button class="hotspot hotspot-danger" type="button" data-topic="seguranca" data-x="0.35" data-y="-0.16" data-z="0.03" aria-label="Proteção e segurança">4</button>
+    </div>
+
+    <!-- PAINEL DE INFORMAÇÕES: Janela flutuante que mostra os textos explicativos (muda dinamicamente via JS) -->
+    <!-- Começa com a classe 'hidden' para nascer invisível até que um hotspot seja clicado -->
+    <section id="info-panel" class="info-panel hidden" aria-live="polite">
+        <button id="close-panel" class="close-button" type="button" aria-label="Fechar painel">×</button>
+        <small>PONTO DO TORNO</small>
+        <h2 id="info-title">Componente</h2>
+        <p id="info-text">Descrição.</p>
+        <p id="info-detail" class="detail">Detalhe.</p>
+    </section>
+
+    <!-- CENA DE RA: Configura o motor de Realidade Aumentada e carrega o arquivo de rastreamento (.mind) -->
+    <a-scene id="ar-scene" mindar-image="imageTargetSrc: assets/targets/torno-cnc.mind; autoStart: true; uiLoading: yes; uiScanning: yes; uiError: yes;" color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded>
+
+        <!-- Câmera do dispositivo que captura o mundo real ao fundo da aplicação -->
+        <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <!-- ÂNCORA DO ALVO: O JavaScript monitora essa entidade para saber quando a imagem do torno foi encontrada ou perdida -->
+        
+
+    </a-scene>
+
+    <!-- Script com a lógica de interações que controla o funcionamento de toda a experiência -->
+    <script src="js/app.js"></script>
+
+</body>
+</html>
